@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/PlinyTheYounger0/pliny_personal_portfolio/cmd/handlers"
 	"github.com/joho/godotenv"
@@ -12,7 +13,10 @@ import (
 
 func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		logger.Error("Error Reading .env", "error", err)
+	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -38,11 +42,12 @@ func main() {
 	srv := &http.Server{
 		Addr:    ":" + port,
 		Handler: mux,
+		ReadHeaderTimeout: 10 * time.Second,
 	}
 
 	fmt.Printf("Server Serving from %s & Listening on Port %s\n", filepathRoot, port)
 
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	if err != nil {
 		logger.Error("Server Failed to Start", "error", err)
 	}
