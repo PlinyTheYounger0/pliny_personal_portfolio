@@ -13,6 +13,6 @@ func (cfg *ApiConfig) Index(w http.ResponseWriter, r *http.Request) {
 
 	err := component.Render(r.Context(), w)
 	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, "Failed to Load Index.", err)
+		cfg.respondWithError(w, http.StatusInternalServerError, "Failed to Load Index.", err)
 	}
 }
