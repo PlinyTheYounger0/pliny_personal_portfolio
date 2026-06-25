@@ -1,0 +1,16 @@
+package templates
+
+templ Layout(title string) {
+  <html>
+    <head>
+      <title>
+        { title }
+      </title>
+      <script src="/static/htmx.min.js"></script>
+      <link rel="stylesheet" href="/static/css/output.css">
+    </head>
+    <body>
+      { children... }
+    </body>
+   </html>
+}
