@@ -15,7 +15,7 @@ tmux send-keys -t $SESSION:0.1 "templ generate --watch" C-m
 
 # Split bottom pane: Tailwind
 tmux split-window -v -t $SESSION:0.1
-tmux send-keys -t $SESSION:0.2 "tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch" C-m
+tmux send-keys -t $SESSION:0.2 'tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch --content "./**/*.{templ,html,go}"' C-m
 
 # Focus main window
 tmux select-layout -t $SESSION:0 tiled

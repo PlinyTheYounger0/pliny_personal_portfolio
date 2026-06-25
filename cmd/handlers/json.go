@@ -2,18 +2,26 @@ package handlers
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
-func respondWithError(w http.ResponseWriter, code int, msg string, err error) {
-	type error struct {
+func (cfg *ApiConfig) respondWithError(w http.ResponseWriter, code int, msg string, err error) {
+	type errorResp struct {
 		Error string `json:"error"`
+		Detail string `json:"detail,omitempty"`
+	}
+
+	resp := errorResp{
+		Error: msg,
+	}
+
+	if err != nil {
+		resp.Detail = err.Error()
 	}
 
 	dat, err := json.Marshal(msg)
 	if err != nil {
-		log.Printf("Error Marshaling JSON: %s", err)
+		cfg.Logger.Error("Error Marshaling JSON", "error", err)
 		w.WriteHeader(500)
 		return
 	}
